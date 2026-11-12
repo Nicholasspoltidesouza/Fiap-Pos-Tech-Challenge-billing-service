@@ -45,3 +45,6 @@ Thumbs.db
 ### Logs ###
 *.log
 logs/
+
+# temporarily ignored until workflow scope is granted
+.github/workflows/ci-cd.yml
