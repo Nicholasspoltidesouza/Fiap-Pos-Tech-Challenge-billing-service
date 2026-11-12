@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: billing-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/billing_db}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+server:
+  port: ${SERVER_PORT:8082}
+  forward-headers-strategy: framework
+
+billing:
+  rabbitmq:
+    exchange: oficina.events
+    queues:
+      orcamento-gerar: billing.orcamento.gerar
+      pagamento-solicitar: billing.pagamento.solicitar
+      compensar-orcamento: billing.compensar.orcamento
+      compensar-pagamento: billing.compensar.pagamento
+    routing-keys:
+      orcamento-gerar: orcamento.gerar
+      pagamento-solicitar: pagamento.solicitar
+      compensar-orcamento: compensar.orcamento
+      compensar-pagamento: compensar.pagamento
+      orcamento-gerado: orcamento.gerado
+      pagamento-aprovado: pagamento.aprovado
+      pagamento-falhou: pagamento.falhou
+
+mercado-pago:
+  access-token: ${MERCADO_PAGO_ACCESS_TOKEN:}
+  base-url: ${MERCADO_PAGO_BASE_URL:https://api.mercadopago.com}
+  mock-enabled: ${MERCADO_PAGO_MOCK_ENABLED:true}
+  auto-approve-on-request: ${MERCADO_PAGO_AUTO_APPROVE:true}
+  notification-url: ${MERCADO_PAGO_NOTIFICATION_URL:http://localhost:8082/api/pagamentos/webhook}
+  success-url: ${MERCADO_PAGO_SUCCESS_URL:http://localhost:3000/pagamento/sucesso}
+  failure-url: ${MERCADO_PAGO_FAILURE_URL:http://localhost:3000/pagamento/falha}
+  pending-url: ${MERCADO_PAGO_PENDING_URL:http://localhost:3000/pagamento/pendente}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    try-it-out-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+logging:
+  level:
+    com.postech.billing: INFO
