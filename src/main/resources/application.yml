@@ -1,9 +1,8 @@
 spring:
   application:
     name: billing-service
-  data:
-    mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/billing_db}
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://localhost:27017/billing_db}
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
